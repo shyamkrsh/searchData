@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student's Record</title>
+    <link rel="stylesheet" href="addDetails.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+    <style>
+        *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+body{
+    background-color:  rgb(3, 11, 86);
+}
+.record-container{
+    width: 100%;
+    height: 100vh;
+    /* border: 2px solid red; */
+}
+.search-container{
+    width:80%;
+    background-color: white;
+    margin-top: 30px;
+    margin: 20px auto;
+    display: flex;
+    height: 40px;
+    border-radius: 8px;
+}
+#searched{
+    background-color: white;
+    font-size: 20px;
+    padding-left: 15px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    
+}
+.search-icon{
+    font:25px; ;
+    padding: 10px;
+    
+
+}
+/* table started from here */
+table{
+    background-color: white;
+    width: 100%;
+    border-spacing: 0;
+}
+
+table tr th{
+    text-align: left;
+    padding-left: 20px;
+    width:20px ;
+    padding: 10px;
+    background-color: gainsboro;
+    
+}
+table tr td{
+    padding: 10px;
+    border-bottom: 1px solid gray;
+    text-transform: capitalize;
+}
+table tr{
+    transition: all .3s;
+}
+table tr:hover{
+    background-color: bisque;
+}
+.record-table{
+    width: 100%;
+    height: 100vh;
+    /* border: 3px solid red; */
+    overflow: scroll;
+}
+.record-table::-webkit-scrollbar{
+    display: none;
+}
+body::-webkit-scrollbar{
+    display: none;
+}
+.content-heading{
+    margin: 20px auto;
+    width: 80%;
+    height: 50px;
+    /* border: 1px solid red; */
+    text-align: center;
+    text-decoration: underline;
+    text-underline-offset:10px;
+    text-decoration-color: yellow;
+}
+.content-heading h1{
+    color: white;
+    font-size: 30px;
+}
+form{
+    color: white;
+}
+
+.main-fill-btn{
+    width: 250px;
+    height: 50px;
+    color: white;
+    font-size: 20px;
+    margin: auto;
+    background-color: blue;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+.form-table{
+    width:50% ;
+    margin: auto;
+    display: none;
+    
+
+}
+.form-table tr th input{
+    width: 100%;
+    height: 30px;
+    
+}
+#add-btn{
+    width: 100px;
+    height: 30px;
+    border: none;
+    background-color: blue;
+    color: white;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.notice{
+    color: greenyellow;
+    font-size: 18px;
+    text-align: right;
+    /* background-color: yellow; */
+    animation: moveNotice 6s linear alternate-reverse infinite;
+}
+@keyframes moveNotice {
+    0%{
+        transform: translateX(-70vw);
+    }
+    100%{
+        transform: translateX(0vw);
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="content-heading">
+        <h1>CSE Department student's Records</h1>
+    </div>
+    <div class="main-fill-btn" id="fill-btn" onclick="onClick()">
+        <h3 class="fill-btn">Add New Candidates</h3>
+    </div>
+    <!-- <div class="main-fill-btn newbtn" id="fill-btn-b" onclick="onClick()">
+        <h3 class="fill-btn">Add New Candidates</h3>
+    </div> -->
+   
+    <table class="form-table">
+        <tr>
+            <th>Name: </th>
+            <th><input type="text" id="input-name"></th>
+        </tr>
+        <tr>
+            <th>Roll No : </th>
+            <th><input type="text" id="input-roll"></th>
+        </tr>
+        <tr>
+            <th>Department : </th>
+            <th><input type="text" id="depart-name"></th>
+        </tr>
+        <tr>
+            <th>Dist. Name : </th>
+            <th><input type="text" id="dist-name"></th>
+        </tr>
+        <tr>
+            <th>Status : </th>
+            <th><input type="text" id="status"></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th><button id="add-btn">Add task</button></th>
+        </tr>
+        
+    </table>
+    
+    <div class="record-container">
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="searched" placeholder="search student's name" onkeyup="onSearch()">
+        </div>
+
+        <h1 id="name" ></h1>
+        <h4 class="notice">New Student's Can be add only two times in a day.</h4>
+        <div class="record-table">
+            <table id="myTable">
+                <!-- <tr>
+                    <th>Student's Name</th>
+                    <th>Roll Number</th>
+                    <th>Department</th>
+                    <th>District Name</th>
+                    <th>Form Status</th>
+                </tr> -->
+                
+                <!-- <tr>
+                    <td>Shyam Kumar Sharma</td>
+                    <td>2022-CSE-53</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>West Champaran</td>
+                    <td style="color: green;">Veryfied</td>
+                </tr>
+                <tr>
+                    <td>Dhananjay Kumar </td>
+                    <td>2022-CSE-54</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>East Champaran</td>
+                    <td style="color: green;">Veryfied</td>
+                </tr> -->
+               <!-- <tr>
+                    <td>Ayush Kumar</td>
+                    <td>2022-CSE-55</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>Patna</td>
+                    <td style="color: green;">Veryfied</td>
+                </tr>
+                <tr>
+                    <td>Shashikant Sharma</td>
+                    <td>2022-CSE-40</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>NA</td>
+                    <td style="color: green;">Veryfied</td>
+                </tr> -->
+                <!-- <tr>
+                    <td>Rohit Kumar</td>
+                    <td>2022-CSE-42</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>Vaishali</td>
+                    <td style="color: green;">Veryfied</td>
+                </tr>
+
+                <tr>
+                    <td>Rishu Kumar</td>
+                    <td>2022-CSE-22</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>Chhapra</td>
+                    <td style="color: red;">Pending</td>
+                </tr> -->
+                <!-- <tr>
+                    <td>Akash Raj</td>
+                    <td>2022-CSE-32</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>Vaishali</td>
+                    <td style="color: green;">Veryfied</td>
+                </tr>
+                <tr>
+                    <td>Krish Kumar</td>
+                    <td>NA</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>NA</td>
+                    <td style="color: red;">Pending</td>
+                </tr> -->
+                <!-- <tr>
+                    <td>Shivam Kumar</td>
+                    <td>NA</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>Sivan</td>
+                    <td style="color: green;">Veryfied</td>
+                </tr>
+                <tr>
+                    <td>Vashu Kumar</td>
+                    <td>2022-CSE-XX</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>Vaishali</td>
+                    <td style="color: green;">Veryfied</td>
+                </tr> -->
+                <!-- <tr>
+                    <td>Rajkumar Sharma</td>
+                    <td>2022-CSE-XX</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>Gopalganj</td>
+                    <td style="color: red;">Rejected</td>
+                </tr>
+                 
+                <tr>
+                    <td id="name"></td>
+                    <td id="roll"></td>
+                    <td id="brn"></td>
+                    <td id="dis"></td>
+                    <td style="color: green;" id="stas"></td>
+                </tr>  -->
+            </table>
+        </div>    
+    </div>
+<!-- 
+form-create-for-adding-details -->
+  
+
+    <script>
+        const onSearch = () => {
+    let filter = document.getElementById('searched').value.toUpperCase();
+
+    let myTable = document.getElementById('myTable');
+
+    let tr = myTable.getElementsByTagName('tr');
+
+    for (var i = 0; i < tr.length; i++) {
+        let td = tr[i].getElementsByTagName('td')[0];
+
+        if (td) {
+            let textvalue = td.textContent || td.innerHTML;
+
+            if (textvalue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+//fill data in table
+function onClick() {
+    document.querySelector(".form-table").style.display = "table";
+    document.querySelector(".fill-btn").innerHTML = "Close Form";
+    document.querySelector(".main-fill-btn").style.background = "red";
+
+    document.querySelector(".main-fill-btn").addEventListener('click',
+        function () {
+            document.querySelector(".form-table").style.display = "none";
+            document.querySelector(".fill-btn").innerHTML = "Add New Candidates";
+            document.querySelector(".main-fill-btn").style.background = "blue";
+
+            document.querySelector(".main-fill-btn").addEventListener('click',
+                function () {
+
+                    document.querySelector(".form-table").style.display = "table";
+                    document.querySelector(".fill-btn").innerHTML = "Close Form";
+                    document.querySelector(".main-fill-btn").style.background = "red";
+
+                    document.querySelector(".main-fill-btn").addEventListener('click',
+                        function () {
+                            document.querySelector(".form-table").style.display = "none";
+                            document.querySelector(".fill-btn").innerHTML = "Add New Candidates";
+                            document.querySelector(".main-fill-btn").style.background = "blue";
+
+                        });
+
+                        });
+
+
+                }
+            );
+
+        }
+
+
+
+
+
+
+
+
+
+//Event Listener
+const addbtn = document.getElementById('add-btn');
+    let text = document.getElementById('myTable').innerHTML = `
+    <tr>
+    <th>Student's Name</th>
+    <th>Roll Number</th>
+    <th>Department</th>
+    <th>District Name</th>
+    <th>Form Status</th>
+    </tr>
+                <tr>
+                    <td>Shyam Kumar Sharma</td>
+                    <td>2022-CSE-53</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>West Champaran</td>
+                    <td style="color: green;">Veryfied</td>
+                </tr>
+                <tr>
+                    <td>Dhananjay Kumar </td>
+                    <td>2022-CSE-54</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>East Champaran</td>
+                    <td style="color: green;">Veryfied</td>
+                </tr>
+                <tr>
+                <td>Ayush Kumar</td>
+                <td>2022-CSE-55</td>
+                <td>Computer Science & Engg.</td>
+                <td>Patna</td>
+                <td style="color: green;">Veryfied</td>
+            </tr>
+            <tr>
+                <td>Shashikant Sharma</td>
+                <td>2022-CSE-40</td>
+                <td>Computer Science & Engg.</td>
+                <td>NA</td>
+                <td style="color: green;">Veryfied</td>
+            </tr>
+            <tr>
+            <td>Rohit Kumar</td>
+            <td>2022-CSE-42</td>
+            <td>Computer Science & Engg.</td>
+            <td>Vaishali</td>
+            <td style="color: green;">Veryfied</td>
+        </tr>
+
+        <tr>
+            <td>Rishu Kumar</td>
+            <td>2022-CSE-22</td>
+            <td>Computer Science & Engg.</td>
+            <td>Chhapra</td>
+            <td style="color: red;">Pending</td>
+        </tr>
+        <tr>
+        <td>Akash Raj</td>
+        <td>2022-CSE-32</td>
+        <td>Computer Science & Engg.</td>
+        <td>Vaishali</td>
+        <td style="color: green;">Veryfied</td>
+    </tr>
+                <tr>
+                    <td>Krish Kumar</td>
+                    <td>NA</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>NA</td>
+                    <td style="color: red;">Pending</td>
+                </tr>
+                <tr>
+                    <td>Shivam Kumar</td>
+                    <td>NA</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>Sivan</td>
+                    <td style="color: green;">Veryfied</td>
+                </tr>
+                <tr>
+                    <td>Vashu Kumar</td>
+                    <td>2022-CSE-XX</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>Vaishali</td>
+                    <td style="color: green;">Veryfied</td>
+                </tr>
+                <tr>
+                    <td>Rajkumar Sharma</td>
+                    <td>2022-CSE-XX</td>
+                    <td>Computer Science & Engg.</td>
+                    <td>Gopalganj</td>
+                    <td style="color: red;">Rejected</td>
+                </tr>
+                 
+                <tr>
+                    <td id="name"></td>
+                    <td id="roll"></td>
+                    <td id="brn"></td>
+                    <td id="dis"></td>
+                    <td style="color: green;" id="stas"></td>
+                </tr>  
+ 
+    `;
+
+    addbtn.addEventListener('click',
+        function () {
+            const textInput = document.getElementById('input-name').value;
+            const rollInput = document.getElementById('input-roll').value;
+            const departInput = document.getElementById('depart-name').value;
+            const district = document.getElementById('dist-name').value;
+            const status = document.getElementById('status').value;
+
+            document.getElementById('myTable').innerHTML += `
+        <tr class="data">
+        <td>${textInput}</td>
+        <td>${rollInput}</td>
+        <td>${departInput}</td>
+        <td>${district}</td>
+        <td style="color: green;" class="delete">${status}</td>
+        </tr>
+        `;
+            document.querySelector('.delete').addEventListener('click',
+                function () {
+                    document.querySelector('.data').style.display = "none";
+                })
+        })
+
+
+
+    </script>
+</body>
+</html>
